@@ -4,9 +4,9 @@
         @include('frontend.pages.dashboard.body_header')
         <!--End hero slider-->
         @include('frontend.pages.dashboard.body_category')
-        @include('frontend.pages.dashboard.best_brand')
+       {{-- @include('frontend.pages.dashboard.best_brand')--}}
         <!--End category slider-->
-        @include('frontend.pages.dashboard.banner')
+        {{--@include('frontend.pages.dashboard.banner')--}}
         <!--End banners-->
         @include('frontend.pages.dashboard.product-tab')
         <!--Products Tabs-->

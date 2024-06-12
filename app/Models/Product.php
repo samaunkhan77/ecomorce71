@@ -31,6 +31,8 @@ class Product extends Model
         'product_code',
         'product_weight',
         'product_availability',
+        'sale_category_id',
+        'sub_category_id',
     ];
 
     protected $attributes = [
@@ -52,6 +54,11 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function saleCategory()
+    {
+        return $this->belongsTo(SaleCategory::class, 'sale_category_id', 'id');
     }
 
 }

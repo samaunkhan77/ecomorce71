@@ -23,7 +23,9 @@
                 <div class="submenu">
                     @if(auth()->user()->role=='Admin')
                     <a href='{{route('category.list')}}'>Category</a>
+                    <a href='{{route('sub.category.list')}}'>Sub Category</a>
                     <a href='{{route('brand.list')}}'>Brand</a>
+                    <a href='{{route('sale.category.list')}}'>Sale Category</a>
                     @endif
                     <a href='{{route('product.list')}}'>Product</a>
                     <a href='page-categories.html'>Categories</a>

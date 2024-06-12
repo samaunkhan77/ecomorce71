@@ -14,12 +14,18 @@
                         <form method="POST" action="{{@$editData ? route('product.update', $editData->id) : route('product.store')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-6">
                                     <div class="mb-4">
                                         <label class="form-label">Product Name</label>
                                         <div class="row gx-2">
                                             <input placeholder="Product Name" type="text" name="product_name" class="form-control" value="{{@$editData->product_name}}" required />
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label class="form-label font-weight-bold">Product Slug</label>
+                                        <input placeholder="Product Slug" type="text" name="product_slug" class="form-control" value="{{@$editData->product_slug}}" required/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -29,6 +35,17 @@
                                             <option value="" selected disabled>Select Category</option>
                                             @foreach($category as $item)
                                                 <option value="{{ $item->id }}" {{@$editData->category_id == $item->id ? 'selected' : ''}}>{{ $item->category_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-4">
+                                        <label class="form-label">Sub Category</label>
+                                        <select name="sub_category_id" class="form-select select2" required>
+                                            <option value="" selected disabled>Select Sub Category</option>
+                                            @foreach($sub_category as $item)
+                                                <option value="{{ $item->id }}" {{@$editData->sub_category_id == $item->id ? 'selected' : ''}}>{{ $item->sub_category_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -46,8 +63,13 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="mb-4">
-                                        <label class="form-label font-weight-bold">Product Slug</label>
-                                        <input placeholder="Product Slug" type="text" name="product_slug" class="form-control" value="{{@$editData->product_slug}}" required/>
+                                        <label class="form-label">Sale Category</label>
+                                        <select name="sale_category_id" class="form-select select2" required>
+                                            <option value="" selected disabled>Select Sale Category</option>
+                                            @foreach($sale_category as $item)
+                                                <option value="{{ $item->id }}" {{@$editData->sale_category_id == $item->id ? 'selected' : ''}}>{{ $item->sale_category_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -74,13 +96,13 @@
                                         <input placeholder="Final Selling Price" type="number" name="product_selling_price" id="product_selling_price" class="form-control" value="{{@$editData->product_selling_price}}" readonly />
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label font-weight-bold">Product Weight</label>
                                         <input placeholder="Product Weight" type="number" name="product_weight" class="form-control" value="{{@$editData->product_weight}}" required/>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">Product Availability</label>
                                         <select name="product_availability" class="form-select">
@@ -90,6 +112,19 @@
                                         </select>
                                     </div>
                                 </div>
+                                @if(auth()->user()->role == 'Admin')
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Product Status</label>
+                                        <select name="product_status" class="form-select">
+                                            <option value="">Select Availability</option>
+                                            <option value="Approved" {{@$editData->product_status == 'Approved' ? 'selected' : ''}}>Approved</option>
+                                            <option value="Pending" {{@$editData->product_status == 'Pending' ? 'selected' : ''}}>Pending</option>
+                                            <option value="Rejected" {{@$editData->product_status == 'Rejected' ? 'selected' : ''}}>Rejected</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="col-lg-12">
                                     <div class="mb-4">
                                         <label class="form-label">Short Description</label>

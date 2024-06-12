@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreign( 'brand_id')->references('id')->on('brands')->cascadeOnUpdate()->restrictOnDelete();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign( 'user_id')->references('id')->on('users')->cascadeOnUpdate()->restrictOnDelete();
+            $table->unsignedBigInteger('sale_category_id')->nullable();
+            $table->foreign( 'sale_category_id')->references('id')->on('sale_categories')->cascadeOnUpdate()->restrictOnDelete();
             $table->longText('long_description')->nullable();
             $table->longText('short_description')->nullable();
             $table->string('product_price')->nullable();

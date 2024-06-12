@@ -13,8 +13,9 @@
         <div class="carausel-8-columns-cover position-relative">
             <div class="carausel-8-columns" id="carausel-8-columns">
                 @foreach($brand as $item)
-                <div class="card-1">
+                <div class="card-2">
                     <figure class="img-hover-scale overflow-hidden">
+                        <img src="{{'uploads/brand/'.$item->brand_image}} " alt="" style="height: 100px;width: 100px" />
                         <a href='shop-grid-right.html'><img src="{{'uploads/brand/'.$item->brand_image}}" alt="" /></a>
                     </figure>
                     <h6>

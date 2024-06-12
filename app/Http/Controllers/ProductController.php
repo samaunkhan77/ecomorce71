@@ -5,20 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SaleCategory;
+use App\Models\SubCategory;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     public function ProductList()
     {
-        $data['allData'] = Product::where('user_id', auth()->user()->id)->get();
+        if (auth()->user()->role == "Admin") {
+            $data['allData'] = Product::all();
+        } else {
+            $data['allData'] = Product::where('user_id', auth()->user()->id)->get();
+        }
         return view('backend.pages.product.list', $data);
     }
 
     public function ProductCreate()
     {
         $data['category'] = Category::all();
+        $data['sub_category'] = SubCategory::all();
+        $data['sale_category'] = SaleCategory::all();
         $data['brand'] = Brand::all();
         return view('backend.pages.product.add', $data);
     }
@@ -28,6 +37,8 @@ class ProductController extends Controller
         try {
             $request->validate([
                 'category_id' => 'required',
+                'sale_category_id' => 'required',
+                'sub_category_id' => 'required',
                 'brand_id' => 'required',
                 'product_name' => 'required',
                 'short_description' => 'required|max:30',
@@ -73,6 +84,8 @@ class ProductController extends Controller
 
             Product::create([
                 'category_id' => $request->category_id,
+                'sale_category_id' => $request->sale_category_id,
+                'sub_category_id' => $request->sub_category_id,
                 'brand_id' => $request->brand_id,
                 'user_id' => auth()->user()->id,
                 'product_name' => $request->product_name,
@@ -84,6 +97,7 @@ class ProductController extends Controller
                 'product_selling_price' => $request->product_selling_price,
                 'product_discount' => $request->discount_price,
                 'product_availability' => $request->product_availability,
+                'product_status' => $request->product_status,
                 'short_description' => $request->short_description,
                 'long_description' => $request->long_description,
                 'product_thumbnail' => $thumbnailName,
@@ -106,6 +120,8 @@ class ProductController extends Controller
     {
         $data['editData'] = Product::find($id);
         $data['category'] = Category::all();
+        $data['sub_category'] = SubCategory::all();
+        $data['sale_category'] = SaleCategory::all();
         $data['brand'] = Brand::all();
         return view('backend.pages.product.add', $data);
     }
@@ -115,6 +131,8 @@ class ProductController extends Controller
         try {
             $request->validate([
                 'category_id' => 'required',
+                'sale_category_id' => 'required',
+                'sub_category_id' => 'required',
                 'brand_id' => 'required',
                 'product_name' => 'required',
                 'short_description' => 'required|max:30',
@@ -166,6 +184,8 @@ class ProductController extends Controller
 
                 Product::where('id', $id)->update([
                     'category_id' => $request->category_id,
+                    'sale_category_id' => $request->sale_category_id,
+                    'sub_category_id' => $request->sub_category_id,
                     'brand_id' => $request->brand_id,
                     'user_id' => auth()->user()->id,
                     'product_name' => $request->product_name,
@@ -176,6 +196,7 @@ class ProductController extends Controller
                     'product_selling_price' => $request->product_selling_price,
                     'product_discount' => $request->discount_price,
                     'product_weight' => $request->product_weight,
+                    'product_status' => $request->product_status,
                     'product_availability' => $request->product_availability,
                     'short_description' => $request->short_description,
                     'long_description' => $request->long_description,
@@ -189,6 +210,8 @@ class ProductController extends Controller
             }else{
                 Product::where('id', $id)->update([
                     'category_id' => $request->category_id,
+                    'sale_category_id' => $request->sale_category_id,
+                    'sub_category_id' => $request->sub_category_id,
                     'brand_id' => $request->brand_id,
                     'user_id' => auth()->user()->id,
                     'product_name' => $request->product_name,
@@ -198,6 +221,7 @@ class ProductController extends Controller
                     'product_selling_price' => $request->product_selling_price,
                     'product_discount' => $request->discount_price,
                     'product_weight' => $request->product_weight,
+                    'product_status' => $request->product_status,
                     'product_availability' => $request->product_availability,
                     'short_description' => $request->short_description,
                     'long_description' => $request->long_description,
@@ -225,5 +249,18 @@ class ProductController extends Controller
         toast()->success('Product Deleted Successfully');
         return redirect()->route('product.list');
     }
+
+    public function loadMoreProducts(Request $request)
+    {
+        $products = Product::with('category', 'user')->paginate(10);
+
+        $html = '';
+        foreach ($products as $item) {
+            $html .= view('partials.product', compact('item'))->render();
+        }
+
+        return response()->json(['html' => $html]);
+    }
+
 
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleCategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,10 @@ Route::get('/customer-login',[CustomerController::class,'CustomerLogin'])->name(
 Route::post('/customer-login',[CustomerController::class,'CustomerLoginPost'])->name('customer.login.post');
 //User Route
 Route::get('/user_category',[CategoryController::class,'UserCategory'])->name('user.category');
+// routes/web.php
+Route::get('/load-more-products', [ProductController::class, 'loadMoreProducts'])->name('load.more.products');
+
+
 
 
 //Admin Dashboard
@@ -58,6 +63,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit/{id}', [SubCategoryController::class, 'Update'])->name('sub.category.update');
         Route::get('/delete/{id}', [SubCategoryController::class, 'Delete'])->name('sub.category.delete');
     });
+    Route::prefix('sale_category')->group(function () {
+        Route::get('/list', [SaleCategoryController::class, 'List'])->name('sale.category.list');
+        Route::get('/add', [SaleCategoryController::class, 'Create'])->name('sale.category.create');
+        Route::post('/add', [SaleCategoryController::class, 'Store'])->name('sale.category.store');
+        Route::get('/edit/{id}', [SaleCategoryController::class, 'Edit'])->name('sale.category.edit');
+        Route::post('/edit/{id}', [SaleCategoryController::class, 'Update'])->name('sale.category.update');
+        Route::get('/delete/{id}', [SaleCategoryController::class, 'Delete'])->name('sale.category.delete');
+    });
 
     Route::prefix('/brand')->group(function () {
         Route::get('/list', [BrandController::class, 'BrandList'])->name('brand.list');
@@ -76,6 +89,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update/{id}', [ProductController::class, 'ProductUpdate'])->name('product.update');
         Route::get('/delete/{id}', [ProductController::class, 'ProductDelete'])->name('product.delete');
     });
+
 });
 
 

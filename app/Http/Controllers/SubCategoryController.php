@@ -12,13 +12,13 @@ class SubCategoryController extends Controller
    public function List()
    {
        $data['allData'] = SubCategory::get();
-       return view('backend.pages.subcategory.list', $data);
+       return view('backend.pages.sub-category.list', $data);
    }
 
    public function Create()
    {
        $data['categories'] = Category::get();
-       return view('backend.pages.subcategory.create', $data);
+       return view('backend.pages.sub-category.add', $data);
    }
 
    public function Store(Request $request)
@@ -48,7 +48,7 @@ class SubCategoryController extends Controller
                'sub_category_image' => $filename,
            ]);
            toast()->success('Sub Category Added Successfully');
-           return redirect()->route('subcategory.list');
+           return redirect()->route('sub.category.list');
        }catch (Exception $e) {
            toast()->error($e->getMessage());
            return redirect()->back()->with('error', $e->getMessage());
@@ -59,7 +59,7 @@ class SubCategoryController extends Controller
    {
        $data['editData'] = SubCategory::find($id);
        $data['categories'] = Category::get();
-       return view('backend.pages.subcategory.add', $data);
+       return view('backend.pages.sub-category.add', $data);
    }
 
    public function Update(Request $request, $id)
@@ -91,7 +91,7 @@ class SubCategoryController extends Controller
                'sub_category_image' => $filename,
            ]);
            toast()->success('Sub Category Updated Successfully');
-           return redirect()->route('subcategory.list');
+           return redirect()->route('sub.category.list');
        }catch (Exception $e) {
            toast()->error($e->getMessage());
            return redirect()->back()->with('error', $e->getMessage());

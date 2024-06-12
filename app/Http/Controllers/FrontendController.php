@@ -13,7 +13,7 @@ class FrontendController extends Controller
     {
         $data['category'] = Category::get();
         $data['brand'] = Brand::get();
-        $data['product'] = Product::all();
+        $data['products'] = Product::where('product_status',"Approved")->where('product_availability',"InStock")->paginate(10);
         return view('frontend.components.dashboard',$data);
     }
 }
